@@ -139,15 +139,4 @@ All component styles are in their respective `.css` files. The color scheme uses
 ```
 3. Run: `npm run deploy`
 
-## License
-
-This project is open source and available under the MIT License.
-
-## Contact
-
-For questions or suggestions, feel free to reach out!
-
----
-
-Made with ❤️ using React.js
 
