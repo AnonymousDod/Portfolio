@@ -1,0 +1,148 @@
+.skills {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-top: none;
+  height: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  align-self: start;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-mode .skills {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.skills__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.skills__container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  flex: 1;
+}
+
+.skills__category {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skills__category-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .skills__category-title {
+  color: #9ca3af;
+}
+
+.skills__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skills__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.skills__item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+.skills__name {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #111827;
+  letter-spacing: 0;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .skills__name {
+  color: #f3f4f6;
+}
+
+.skills__level {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.dark-mode .skills__level {
+  color: #6b7280;
+}
+
+.skills__bar {
+  width: 100%;
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .skills__bar {
+  background-color: #374151;
+}
+
+.skills__percentage {
+  height: 100%;
+  background-color: #6366f1;
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.section__link {
+  font-size: 0.875rem;
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.section__link:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+.dark-mode .section__link {
+  color: #818cf8;
+}
+
+.dark-mode .section__link:hover {
+  color: #a5b4fc;
+}
+
+@media screen and (max-width: 768px) {
+  .skills__container {
+    gap: 1.5rem;
+  }
+}

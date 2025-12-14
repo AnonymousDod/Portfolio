@@ -1,0 +1,232 @@
+.projects {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-top: none;
+  height: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  align-self: start;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-mode .projects {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.projects__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.projects__container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  flex: 1;
+}
+
+.projects__container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projects__container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.dark-mode .projects__container::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.projects__container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.dark-mode .projects__container::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.projects__container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark-mode .projects__container::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.projects__card {
+  background-color: transparent;
+  border-radius: 0;
+  overflow: visible;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: none;
+  transition: none;
+  padding-bottom: 1.25rem;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dark-mode .projects__card {
+  border-bottom-color: #374151;
+}
+
+.projects__card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.projects__card:hover {
+  transform: none;
+  border-color: #e5e7eb;
+  box-shadow: none;
+}
+
+.dark-mode .projects__card:hover {
+  border-color: #374151;
+}
+
+.projects__image {
+  display: none;
+}
+
+.projects__content {
+  padding: 0;
+  width: 100%;
+}
+
+.projects__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+  color: #111827;
+  letter-spacing: 0;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .projects__title {
+  color: #f3f4f6;
+}
+
+.projects__description {
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .projects__description {
+  color: #d1d5db;
+}
+
+.projects__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.projects__tag {
+  padding: 0.2rem 0.5rem;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  color: #4b5563;
+  font-weight: 400;
+  border: none;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode .projects__tag {
+  background-color: #374151;
+  color: #9ca3af;
+}
+
+.projects__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.projects__button {
+  padding: 0;
+  background-color: transparent;
+  color: #6366f1;
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0;
+}
+
+.projects__button:hover {
+  background-color: transparent;
+  transform: none;
+  box-shadow: none;
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+
+.dark-mode .projects__button {
+  color: #818cf8;
+}
+
+.dark-mode .projects__button:hover {
+  color: #a5b4fc;
+  border-bottom-color: #a5b4fc;
+}
+
+.projects__button--ghost {
+  background-color: transparent;
+  color: #6366f1;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0;
+}
+
+.projects__button--ghost:hover {
+  background-color: transparent;
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+
+.dark-mode .projects__button--ghost {
+  color: #818cf8;
+}
+
+.dark-mode .projects__button--ghost:hover {
+  color: #a5b4fc;
+  border-bottom-color: #a5b4fc;
+}
+
+@media screen and (max-width: 768px) {
+  .projects__container {
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,29 @@
+.footer {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 4rem 0 2rem;
+  border-top: 1px solid #e5e5e5;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode .footer {
+  background-color: #0f172a;
+  border-top-color: #374151;
+  color: #f3f4f6;
+}
+
+.footer__copy {
+  text-align: center;
+  padding-top: 0;
+  border-top: none;
+  color: #666666;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.dark-mode .footer__copy {
+  color: #9ca3af;
+}
