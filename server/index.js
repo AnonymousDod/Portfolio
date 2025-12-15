@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -8,14 +8,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Check if email credentials are configured
-if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-  console.warn('\n⚠️  WARNING: Email credentials not configured!');
-  console.warn('Please create a .env file in the server directory with:');
-  console.warn('EMAIL_USER=your-email@gmail.com');
-  console.warn('EMAIL_PASS=your-app-password');
-  console.warn('PORT=5000\n');
-  console.warn('See SETUP.md for detailed instructions.\n');
+// Initialize Resend
+let resend = null;
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+  console.log('✅ Resend initialized successfully');
+} else {
+  console.warn('\n⚠️  WARNING: Resend API key not configured!');
+  console.warn('Please set RESEND_API_KEY in Railway environment variables.');
+  console.warn('Get your API key from: https://resend.com/api-keys\n');
 }
 
 // Middleware
@@ -30,87 +31,20 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Create transporter for nodemailer (only if credentials exist)
-let transporter = null;
-if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-  // Try port 465 (SSL) first - more reliable from cloud platforms
-  // If that fails, the code will fall back to port 587
-  transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_USER.trim(),
-      pass: process.env.EMAIL_PASS.trim()
-    },
-    tls: {
-      rejectUnauthorized: false // Allow self-signed certificates
-    },
-    connectionTimeout: 20000, // 20 seconds
-    greetingTimeout: 20000,
-    socketTimeout: 20000,
-    pool: true, // Use connection pooling
-    maxConnections: 1,
-    maxMessages: 3
-  });
+// Email configuration
+const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev'; // Default Resend domain
+const TO_EMAIL = process.env.TO_EMAIL || process.env.EMAIL_USER || 'rodmayol82@gmail.com';
 
-  // Verify transporter configuration with better error handling
-  // Try port 465 first, if it fails, create a fallback with port 587
-  transporter.verify((error, success) => {
-    if (error) {
-      console.warn('\n⚠️  Port 465 (SSL) failed, trying port 587 (TLS)...');
-      console.warn('Error:', error.message);
-      
-      // Create fallback transporter with port 587
-      transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-          user: process.env.EMAIL_USER.trim(),
-          pass: process.env.EMAIL_PASS.trim()
-        },
-        tls: {
-          rejectUnauthorized: false
-        },
-        connectionTimeout: 20000,
-        greetingTimeout: 20000,
-        socketTimeout: 20000
-      });
-      
-      // Try verifying with port 587
-      transporter.verify((error2, success2) => {
-        if (error2) {
-          console.error('\n❌ Both ports failed. Connection timeout issue.');
-          console.error('Error code:', error2.code);
-          console.error('Error message:', error2.message);
-          console.error('\n💡 This is likely a network/firewall issue from Railway.');
-          console.error('💡 Consider using a cloud email service like Resend (free tier available)');
-          console.error('\nTroubleshooting:');
-          console.error('1. Verify EMAIL_USER:', process.env.EMAIL_USER ? 'Set ✓' : 'Missing ✗');
-          console.error('2. Verify EMAIL_PASS is correct (16 chars, no spaces)');
-          console.error('3. Gmail may be blocking Railway IPs - try Resend instead\n');
-        } else {
-          console.log('✅ Email transporter verified successfully (port 587)');
-          console.log('✅ Server is ready to send emails');
-        }
-      });
-    } else {
-      console.log('✅ Email transporter verified successfully (port 465)');
-      console.log('✅ Server is ready to send emails');
-    }
-  });
-} else {
-  console.log('⚠️  Email functionality disabled - credentials not configured');
-  console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'Missing');
-  console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'Missing');
+if (resend) {
+  console.log(`📧 Email will be sent from: ${FROM_EMAIL}`);
+  console.log(`📧 Email will be sent to: ${TO_EMAIL}`);
 }
 
 // Contact form endpoint
 app.post('/api/contact', async (req, res) => {
   try {
-    // Check if email is configured
-    if (!transporter) {
+    // Check if Resend is configured
+    if (!resend) {
       return res.status(503).json({ 
         success: false, 
         message: 'Email service is not configured. Please contact the administrator.' 
@@ -136,10 +70,10 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Send to yourself
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: TO_EMAIL,
       replyTo: email, // Allow reply directly to the sender
       subject: `Portfolio Inquiry from ${name}`,
       html: `
@@ -166,22 +100,20 @@ app.post('/api/contact', async (req, res) => {
           </div>
         </div>
       `,
-      text: `
-        New Project Inquiry
-        
-        Name: ${name}
-        Email: ${email}
-        Date: ${new Date().toLocaleString()}
-        
-        Message:
-        ${message}
-      `
-    };
+    });
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+    if (error) {
+      console.error('\n❌ Error sending email via Resend:');
+      console.error('Error:', error);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Failed to send email. Please try again later.' 
+      });
+    }
 
-    console.log(`✅ Email sent successfully from ${email} to ${process.env.EMAIL_USER}`);
+    console.log(`✅ Email sent successfully from ${email} to ${TO_EMAIL}`);
+    console.log(`📧 Resend ID: ${data?.id}`);
+    
     res.status(200).json({ 
       success: true, 
       message: 'Email sent successfully!' 
@@ -189,21 +121,11 @@ app.post('/api/contact', async (req, res) => {
 
   } catch (error) {
     console.error('\n❌ Error sending email:');
-    console.error('Error code:', error.code);
-    console.error('Error command:', error.command);
-    console.error('Error message:', error.message);
-    
-    // Provide more specific error messages
-    let errorMessage = 'Failed to send email. Please try again later.';
-    if (error.code === 'ETIMEDOUT' || error.code === 'ECONNECTION') {
-      errorMessage = 'Connection timeout. Please check email configuration.';
-    } else if (error.code === 'EAUTH') {
-      errorMessage = 'Authentication failed. Please check email credentials.';
-    }
+    console.error('Error:', error);
     
     res.status(500).json({ 
       success: false, 
-      message: errorMessage 
+      message: 'Failed to send email. Please try again later.' 
     });
   }
 });
