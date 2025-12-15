@@ -148,7 +148,32 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-app.listen(PORT, () => {
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Portfolio Backend API is running',
+    endpoints: {
+      health: '/api/health',
+      contact: '/api/contact (POST)'
+    }
+  });
+});
+
+// 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ 
+    success: false, 
+    message: 'Route not found',
+    availableRoutes: {
+      health: 'GET /api/health',
+      contact: 'POST /api/contact'
+    }
+  });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
