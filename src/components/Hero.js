@@ -15,7 +15,7 @@ const Hero = () => {
         <div className="hero__image">
           <div className="hero__image-wrapper">
             <img 
-              src="/images/profile.png" 
+              src="/images/Profile.png" 
               alt="Rod Kent M. Ito" 
               className="hero__img"
               onError={(e) => {
