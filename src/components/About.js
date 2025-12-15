@@ -22,7 +22,7 @@ Currently, I am actively expanding my technical arsenal by deep-diving into the 
             </div>
             <div className="about__info-item">
               <span className="about__info-title">Projects Completed</span>
-              <span className="about__info-name">6 Projects</span>
+              <span className="about__info-name"> Projects</span>
             </div>
             <div className="about__info-item">
               <span className="about__info-title">Education</span>

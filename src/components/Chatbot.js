@@ -173,13 +173,14 @@ export default function Chatbot() {
             <div className="chatbot__header-content">
               <div className="chatbot__header-avatar">
                 <img 
-                  src="/images/profile.png" 
+                  src="/images/Profile.png" 
                   alt="Rod Kent M. Ito" 
                   className="chatbot__avatar-img"
                   onError={(e) => {
                     e.target.style.display = 'none';
-                    if (e.target.nextSibling) {
-                      e.target.nextSibling.style.display = 'flex';
+                    const svg = e.target.parentElement.querySelector('svg');
+                    if (svg) {
+                      svg.style.display = 'flex';
                     }
                   }}
                 />

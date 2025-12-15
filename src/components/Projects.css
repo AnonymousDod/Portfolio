@@ -226,7 +226,30 @@
 }
 
 @media screen and (max-width: 768px) {
+  .projects {
+    padding: 1.25rem 1rem;
+  }
+  
   .projects__container {
-    gap: 1.5rem;
+    gap: 1.25rem;
+    max-height: 400px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .projects {
+    padding: 1rem 0.75rem;
+  }
+  
+  .projects__container {
+    max-height: 350px;
+  }
+  
+  .projects__title {
+    font-size: 0.875rem;
+  }
+  
+  .projects__description {
+    font-size: 0.75rem;
   }
 }

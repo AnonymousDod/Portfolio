@@ -26,6 +26,18 @@
   align-items: start;
 }
 
+@media screen and (max-width: 1024px) {
+  .hero__container {
+    gap: 2rem;
+    padding: 0 1.5rem;
+  }
+  
+  .hero__image-wrapper {
+    width: 180px;
+    height: 220px;
+  }
+}
+
 .hero__image {
   display: flex;
   justify-content: center;
@@ -33,8 +45,8 @@
 }
 
 .hero__image-wrapper {
-  width: 180px;
-  height: 180px;
+  width: 200px;
+  height: 240px;
   border-radius: 12px;
   position: relative;
   background-color: #f3f4f6;
@@ -214,8 +226,8 @@
   }
 
   .hero__image-wrapper {
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 220px;
   }
 
   .hero__title {

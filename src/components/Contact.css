@@ -239,14 +239,44 @@
 }
 
 @media screen and (max-width: 968px) {
+  .contact .container {
+    padding: 0 1.5rem;
+  }
+  
   .contact__container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contact {
+    padding: 1.25rem 0;
+  }
+  
+  .contact .container {
+    padding: 0 1rem;
+  }
+  
+  .contact__container {
+    gap: 1.5rem;
   }
 }
 
 @media screen and (max-width: 576px) {
+  .contact {
+    padding: 1rem 0;
+  }
+  
+  .contact .container {
+    padding: 0 0.75rem;
+  }
+  
   .contact__card {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+  
+  .contact__title {
+    font-size: 1.125rem;
   }
 }

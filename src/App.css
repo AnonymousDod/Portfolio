@@ -44,6 +44,8 @@
 @media screen and (max-width: 1024px) {
   .main-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 0 1.5rem;
   }
 
   .main-grid .about {
@@ -62,11 +64,23 @@
 @media screen and (max-width: 768px) {
   .main-grid {
     grid-template-columns: 1fr;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    gap: 1.5rem;
   }
 
   .main-grid > * {
     grid-column: span 1 !important;
+  }
+  
+  .main-content {
+    padding: 1.5rem 0 3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-grid {
+    padding: 0 0.75rem;
+    gap: 1rem;
   }
 }
 

@@ -7,9 +7,9 @@ const Skills = () => {
       category: 'Programming Languages',
       skills: [
         { name: 'Python', level: 85 },
-        { name: 'JavaScript', level: 80 },
-        { name: 'SQL', level: 80 },
-        { name: 'Typescript', level: 80 },
+        { name: 'JavaScript', level: 75 },
+        { name: 'SQL', level: 80},
+        { name: 'Typescript', level: 85},
       ]
     },
     {

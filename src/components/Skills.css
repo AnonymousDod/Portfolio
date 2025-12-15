@@ -142,7 +142,17 @@
 }
 
 @media screen and (max-width: 768px) {
+  .skills {
+    padding: 1.25rem 1rem;
+  }
+  
   .skills__container {
-    gap: 1.5rem;
+    gap: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .skills {
+    padding: 1rem 0.75rem;
   }
 }

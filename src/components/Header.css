@@ -130,6 +130,10 @@
 
 /* Mobile */
 @media screen and (max-width: 768px) {
+  .nav {
+    padding: 0 1.5rem;
+  }
+  
   .nav__menu {
     position: fixed;
     top: 0;
@@ -169,6 +173,21 @@
     position: absolute;
     top: 1rem;
     right: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .nav {
+    padding: 0 1rem;
+  }
+  
+  .nav__logo {
+    font-size: 1.125rem;
+  }
+  
+  .nav__menu {
+    width: 85%;
+    padding: 3.5rem 0 0 2rem;
   }
 }
 
