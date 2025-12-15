@@ -124,6 +124,21 @@ app.post('/api/contact', async (req, res) => {
     if (error) {
       console.error('\n❌ Error sending email via Resend:');
       console.error('Error:', error);
+      
+      // Check if it's a domain verification error
+      if (error.message && error.message.includes('domain is not verified')) {
+        console.error('\n💡 Domain verification error detected!');
+        console.error('💡 Either:');
+        console.error('   1. Verify your domain at https://resend.com/domains');
+        console.error('   2. Remove FROM_EMAIL from Railway to use onboarding@resend.dev');
+        console.error(`   Current FROM_EMAIL: ${FROM_EMAIL}\n`);
+        
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Email domain not verified. Please verify your domain in Resend or use the default sender.' 
+        });
+      }
+      
       return res.status(500).json({ 
         success: false, 
         message: 'Failed to send email. Please try again later.' 
