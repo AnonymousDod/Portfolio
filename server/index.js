@@ -33,12 +33,12 @@ app.use(express.urlencoded({ extended: true }));
 // Create transporter for nodemailer (only if credentials exist)
 let transporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-  // Use explicit SMTP configuration instead of 'gmail' service
-  // This is more reliable and avoids connection timeout issues
+  // Try port 465 (SSL) first - more reliable from cloud platforms
+  // If that fails, the code will fall back to port 587
   transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
       user: process.env.EMAIL_USER.trim(),
       pass: process.env.EMAIL_PASS.trim()
@@ -46,25 +46,57 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     tls: {
       rejectUnauthorized: false // Allow self-signed certificates
     },
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 10000,
-    socketTimeout: 10000
+    connectionTimeout: 20000, // 20 seconds
+    greetingTimeout: 20000,
+    socketTimeout: 20000,
+    pool: true, // Use connection pooling
+    maxConnections: 1,
+    maxMessages: 3
   });
 
   // Verify transporter configuration with better error handling
+  // Try port 465 first, if it fails, create a fallback with port 587
   transporter.verify((error, success) => {
     if (error) {
-      console.error('\n❌ Error with email configuration:');
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
-      console.error('\nTroubleshooting steps:');
-      console.error('1. Verify EMAIL_USER is correct:', process.env.EMAIL_USER ? 'Set ✓' : 'Missing ✗');
-      console.error('2. Verify EMAIL_PASS is a valid Gmail App Password (16 characters, no spaces)');
-      console.error('3. Make sure 2-Step Verification is enabled on your Google account');
-      console.error('4. Generate a new App Password if needed: https://myaccount.google.com/apppasswords');
-      console.error('5. Check Railway environment variables are set correctly\n');
+      console.warn('\n⚠️  Port 465 (SSL) failed, trying port 587 (TLS)...');
+      console.warn('Error:', error.message);
+      
+      // Create fallback transporter with port 587
+      transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USER.trim(),
+          pass: process.env.EMAIL_PASS.trim()
+        },
+        tls: {
+          rejectUnauthorized: false
+        },
+        connectionTimeout: 20000,
+        greetingTimeout: 20000,
+        socketTimeout: 20000
+      });
+      
+      // Try verifying with port 587
+      transporter.verify((error2, success2) => {
+        if (error2) {
+          console.error('\n❌ Both ports failed. Connection timeout issue.');
+          console.error('Error code:', error2.code);
+          console.error('Error message:', error2.message);
+          console.error('\n💡 This is likely a network/firewall issue from Railway.');
+          console.error('💡 Consider using a cloud email service like Resend (free tier available)');
+          console.error('\nTroubleshooting:');
+          console.error('1. Verify EMAIL_USER:', process.env.EMAIL_USER ? 'Set ✓' : 'Missing ✗');
+          console.error('2. Verify EMAIL_PASS is correct (16 chars, no spaces)');
+          console.error('3. Gmail may be blocking Railway IPs - try Resend instead\n');
+        } else {
+          console.log('✅ Email transporter verified successfully (port 587)');
+          console.log('✅ Server is ready to send emails');
+        }
+      });
     } else {
-      console.log('✅ Email transporter verified successfully');
+      console.log('✅ Email transporter verified successfully (port 465)');
       console.log('✅ Server is ready to send emails');
     }
   });
