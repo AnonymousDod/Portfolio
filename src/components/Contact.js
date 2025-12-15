@@ -27,11 +27,24 @@ const Contact = () => {
     setSubmitStatus({ type: '', message: '' });
 
     try {
-      // Use environment variable for API URL, fallback to localhost for development
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      // Use environment variable for API URL
+      // Fallback: if in production (not localhost), use Railway URL directly
+      let API_URL = process.env.REACT_APP_API_URL;
+      
+      if (!API_URL) {
+        // Check if we're in production (not localhost)
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          // Production fallback - use Railway URL
+          API_URL = 'https://portfolio-production-6f5d.up.railway.app';
+        } else {
+          // Development fallback
+          API_URL = 'http://localhost:5000';
+        }
+      }
       
       // Debug: Log the API URL being used (remove in production if needed)
       console.log('API URL:', API_URL);
+      console.log('REACT_APP_API_URL env var:', process.env.REACT_APP_API_URL);
       console.log('Full endpoint:', `${API_URL}/api/contact`);
       
       const response = await fetch(`${API_URL}/api/contact`, {
