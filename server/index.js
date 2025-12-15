@@ -33,25 +33,45 @@ app.use(express.urlencoded({ extended: true }));
 // Create transporter for nodemailer (only if credentials exist)
 let transporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  // Use explicit SMTP configuration instead of 'gmail' service
+  // This is more reliable and avoids connection timeout issues
   transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+      user: process.env.EMAIL_USER.trim(),
+      pass: process.env.EMAIL_PASS.trim()
+    },
+    tls: {
+      rejectUnauthorized: false // Allow self-signed certificates
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 
-  // Verify transporter configuration
+  // Verify transporter configuration with better error handling
   transporter.verify((error, success) => {
     if (error) {
-      console.error('❌ Error with email configuration:', error.message);
-      console.error('Please check your EMAIL_USER and EMAIL_PASS in the .env file.');
+      console.error('\n❌ Error with email configuration:');
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      console.error('\nTroubleshooting steps:');
+      console.error('1. Verify EMAIL_USER is correct:', process.env.EMAIL_USER ? 'Set ✓' : 'Missing ✗');
+      console.error('2. Verify EMAIL_PASS is a valid Gmail App Password (16 characters, no spaces)');
+      console.error('3. Make sure 2-Step Verification is enabled on your Google account');
+      console.error('4. Generate a new App Password if needed: https://myaccount.google.com/apppasswords');
+      console.error('5. Check Railway environment variables are set correctly\n');
     } else {
+      console.log('✅ Email transporter verified successfully');
       console.log('✅ Server is ready to send emails');
     }
   });
 } else {
   console.log('⚠️  Email functionality disabled - credentials not configured');
+  console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'Missing');
+  console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'Missing');
 }
 
 // Contact form endpoint
@@ -129,16 +149,29 @@ app.post('/api/contact', async (req, res) => {
     // Send email
     await transporter.sendMail(mailOptions);
 
+    console.log(`✅ Email sent successfully from ${email} to ${process.env.EMAIL_USER}`);
     res.status(200).json({ 
       success: true, 
       message: 'Email sent successfully!' 
     });
 
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('\n❌ Error sending email:');
+    console.error('Error code:', error.code);
+    console.error('Error command:', error.command);
+    console.error('Error message:', error.message);
+    
+    // Provide more specific error messages
+    let errorMessage = 'Failed to send email. Please try again later.';
+    if (error.code === 'ETIMEDOUT' || error.code === 'ECONNECTION') {
+      errorMessage = 'Connection timeout. Please check email configuration.';
+    } else if (error.code === 'EAUTH') {
+      errorMessage = 'Authentication failed. Please check email credentials.';
+    }
+    
     res.status(500).json({ 
       success: false, 
-      message: 'Failed to send email. Please try again later.' 
+      message: errorMessage 
     });
   }
 });
