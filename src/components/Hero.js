@@ -2,13 +2,6 @@ import React from 'react';
 import './Hero.css';
 
 const Hero = () => {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <section id="home" className="hero">
       <div className="hero__container container">
