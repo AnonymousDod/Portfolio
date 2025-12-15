@@ -238,6 +238,43 @@
   background-color: #4f46e5;
 }
 
+.contact__button-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact__status {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contact__status--success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.dark-mode .contact__status--success {
+  background-color: #064e3b;
+  color: #6ee7b7;
+  border-color: #10b981;
+}
+
+.contact__status--error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+.dark-mode .contact__status--error {
+  background-color: #7f1d1d;
+  color: #fca5a5;
+  border-color: #ef4444;
+}
+
 @media screen and (max-width: 968px) {
   .contact .container {
     padding: 0 1.5rem;

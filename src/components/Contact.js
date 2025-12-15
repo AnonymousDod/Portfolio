@@ -7,20 +7,60 @@ const Contact = () => {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear status message when user starts typing
+    if (submitStatus.message) {
+      setSubmitStatus({ type: '', message: '' });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your inquiry. I will respond within 24-48 hours.');
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      // Use environment variable for API URL, fallback to localhost for development
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Thank you for your inquiry! I will respond within 24-48 hours.'
+        });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: data.message || 'Failed to send message. Please try again.'
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: 'Network error. Please check your connection and try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -106,9 +146,29 @@ const Contact = () => {
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn btn--primary contact__button-submit">
-                Send Message
-                <i className="fas fa-paper-plane"></i>
+              {submitStatus.message && (
+                <div 
+                  className={`contact__status ${submitStatus.type === 'success' ? 'contact__status--success' : 'contact__status--error'}`}
+                >
+                  {submitStatus.message}
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                className="btn btn--primary contact__button-submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <i className="fas fa-spinner fa-spin"></i> Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <i className="fas fa-paper-plane"></i>
+                  </>
+                )}
               </button>
             </form>
           </div>
