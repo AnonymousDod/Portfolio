@@ -23,7 +23,26 @@ if (process.env.RESEND_API_KEY) {
 // CORS configuration - allow requests from frontend
 // In production, set FRONTEND_URL environment variable to your frontend domain
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*', // Allow all in dev, restrict in production
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Normalize origin by removing trailing slash
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    
+    // Get allowed origin from environment variable (remove trailing slash)
+    const allowedOrigin = process.env.FRONTEND_URL 
+      ? process.env.FRONTEND_URL.trim().replace(/\/$/, '')
+      : '*';
+    
+    // Check if origin matches (normalized, handles trailing slash differences)
+    if (allowedOrigin === '*' || normalizedOrigin === allowedOrigin) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked: ${normalizedOrigin} not in allowed origins`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
