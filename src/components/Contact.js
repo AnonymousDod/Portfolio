@@ -30,6 +30,10 @@ const Contact = () => {
       // Use environment variable for API URL, fallback to localhost for development
       const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
+      // Debug: Log the API URL being used (remove in production if needed)
+      console.log('API URL:', API_URL);
+      console.log('Full endpoint:', `${API_URL}/api/contact`);
+      
       const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: {
