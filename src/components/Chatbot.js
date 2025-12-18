@@ -1,13 +1,30 @@
 import { BubbleChat } from 'flowise-embed-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Chatbot = () => {
+  const { isDarkMode } = useTheme();
+  
+  // Dynamic colors based on theme
+  const buttonBg = isDarkMode ? '#6366f1' : '#111827';
+  const chatWindowBg = isDarkMode ? '#111827' : '#ffffff';
+  const chatWindowBorder = isDarkMode ? '#374151' : '#e5e7eb';
+  const headerBorder = isDarkMode ? '#374151' : '#e5e7eb';
+  const botMessageBg = isDarkMode ? '#374151' : '#f3f4f6';
+  const botMessageText = isDarkMode ? '#f3f4f6' : '#111827';
+  const userMessageBg = isDarkMode ? '#6366f1' : '#111827';
+  const inputBg = isDarkMode ? '#1f2937' : '#ffffff';
+  const inputBorder = isDarkMode ? '#374151' : '#e5e7eb';
+  const inputText = isDarkMode ? '#f3f4f6' : '#111827';
+  const inputFocusBorder = isDarkMode ? '#6366f1' : '#111827';
+  const scrollbarThumb = isDarkMode ? '#4b5563' : '#cbd5e1';
+  
   return (
     <BubbleChat
       chatflowid="b0f8bb98-33df-42dd-8af7-6d2ee4f4710c"
       apiHost="https://cloud.flowiseai.com"
       theme={{
         button: {
-          backgroundColor: '#111827',
+          backgroundColor: buttonBg,
           right: 20,
           bottom: 20,
           size: 48,
@@ -33,16 +50,21 @@ const Chatbot = () => {
           [class*="chat-window"],
           [class*="bubble-chat"] {
             border-radius: 12px !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid #e5e7eb !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, ${isDarkMode ? '0.3' : '0.1'}) !important;
+            border: 1px solid ${chatWindowBorder} !important;
+            background-color: ${chatWindowBg} !important;
+            transition: background-color 0.3s ease, border-color 0.3s ease !important;
           }
           
           /* Compact header */
           [class*="header"],
           [class*="title"] {
             padding: 0.75rem 1rem !important;
-            border-bottom: 1px solid #e5e7eb !important;
+            border-bottom: 1px solid ${headerBorder} !important;
             font-size: 14px !important;
+            background-color: ${chatWindowBg} !important;
+            color: ${isDarkMode ? '#f3f4f6' : '#111827'} !important;
+            transition: background-color 0.3s ease, border-color 0.3s ease !important;
           }
           
           /* Compact messages */
@@ -55,19 +77,45 @@ const Chatbot = () => {
             margin: 0.25rem 0 !important;
           }
           
-          /* Compact input */
+          /* Text input box - fixed styling */
           [class*="input"],
-          [class*="text-input"] {
-            border-radius: 6px !important;
-            border: 1px solid #e5e7eb !important;
-            padding: 0.5rem 0.75rem !important;
+          [class*="text-input"],
+          input[type="text"],
+          textarea {
+            border-radius: 8px !important;
+            border: 1px solid ${inputBorder} !important;
+            padding: 0.625rem 0.875rem !important;
             font-size: 14px !important;
+            background-color: ${inputBg} !important;
+            color: ${inputText} !important;
+            transition: all 0.2s ease !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
           
-          [class*="input"]:focus {
-            border-color: #111827 !important;
+          [class*="input"]::placeholder,
+          [class*="text-input"]::placeholder,
+          input[type="text"]::placeholder,
+          textarea::placeholder {
+            color: ${isDarkMode ? '#6b7280' : '#9ca3af'} !important;
+          }
+          
+          [class*="input"]:focus,
+          [class*="text-input"]:focus,
+          input[type="text"]:focus,
+          textarea:focus {
+            border-color: ${inputFocusBorder} !important;
             outline: none !important;
-            box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1) !important;
+            box-shadow: 0 0 0 2px ${isDarkMode ? 'rgba(99, 102, 241, 0.2)' : 'rgba(17, 24, 39, 0.1)'} !important;
+          }
+          
+          /* Input container */
+          [class*="input-container"],
+          [class*="input-wrapper"] {
+            background-color: ${chatWindowBg} !important;
+            border-top: 1px solid ${headerBorder} !important;
+            padding: 0.75rem 1rem !important;
+            transition: background-color 0.3s ease, border-color 0.3s ease !important;
           }
           
           /* Thin scrollbar */
@@ -76,25 +124,8 @@ const Chatbot = () => {
           }
           
           *::-webkit-scrollbar-thumb {
-            background: #cbd5e1 !important;
+            background: ${scrollbarThumb} !important;
             border-radius: 2px !important;
-          }
-          
-          /* Dark mode */
-          .dark-mode [class*="chat-window"],
-          .dark-mode [class*="bubble-chat"] {
-            background-color: #111827 !important;
-            border-color: #374151 !important;
-          }
-          
-          .dark-mode [class*="input"] {
-            background-color: #1f2937 !important;
-            border-color: #374151 !important;
-            color: #f3f4f6 !important;
-          }
-          
-          .dark-mode *::-webkit-scrollbar-thumb {
-            background: #4b5563 !important;
           }
           
           /* Hide disclaimer and footer */
@@ -111,7 +142,7 @@ const Chatbot = () => {
           titleAvatarSrc: '/images/profile.png',
           welcomeMessage: 'Hi! Ask me anything about my portfolio, skills, or projects.',
           errorMessage: 'Sorry, I\'m having trouble connecting. Please try again later.',
-          backgroundColor: '#ffffff',
+          backgroundColor: chatWindowBg,
           backgroundImage: undefined,
           height: 480,
           width: 320,
@@ -126,22 +157,22 @@ const Chatbot = () => {
           sourceDocsTitle: 'Sources:',
           renderHTML: true,
           botMessage: {
-            backgroundColor: '#f3f4f6',
-            textColor: '#111827',
+            backgroundColor: botMessageBg,
+            textColor: botMessageText,
             showAvatar: true,
             avatarSrc: '/images/profile.png'
           },
           userMessage: {
-            backgroundColor: '#111827',
+            backgroundColor: userMessageBg,
             textColor: '#ffffff',
             showAvatar: false,
             avatarSrc: undefined
           },
           textInput: {
             placeholder: 'Type your message...',
-            backgroundColor: '#ffffff',
-            textColor: '#111827',
-            sendButtonColor: '#111827',
+            backgroundColor: inputBg,
+            textColor: inputText,
+            sendButtonColor: isDarkMode ? '#6366f1' : '#111827',
             maxChars: 1000,
             maxCharsWarningMessage: 'Character limit exceeded.',
             autoFocus: false,
