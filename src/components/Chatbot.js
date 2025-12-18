@@ -8,12 +8,12 @@ const Chatbot = () => {
       theme={{
         button: {
           backgroundColor: '#111827',
-          right: 24,
-          bottom: 24,
-          size: 60,
+          right: 20,
+          bottom: 20,
+          size: 48,
           dragAndDrop: true,
           iconColor: '#ffffff',
-          customIconSrc: undefined, // Use default icon
+          customIconSrc: undefined,
           autoWindowOpen: {
             autoOpen: false,
             openDelay: 0,
@@ -22,10 +22,10 @@ const Chatbot = () => {
         },
         tooltip: {
           showTooltip: true,
-          tooltipMessage: 'Hi! Ask me anything 👋',
+          tooltipMessage: 'Chat with me 👋',
           tooltipBackgroundColor: '#111827',
           tooltipTextColor: '#ffffff',
-          tooltipFontSize: 14
+          tooltipFontSize: 12
         },
         disclaimer: {
           title: 'Disclaimer',
@@ -38,83 +38,63 @@ const Chatbot = () => {
           backgroundColor: '#ffffff'
         },
         customCSS: `
-          /* Match website's minimalist style */
+          /* Clean minimalist style */
           * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
           }
           
-          /* Chat window container */
-          .bubble-chat-container,
+          /* Compact chat window */
           [class*="chat-window"],
           [class*="bubble-chat"] {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-            border-radius: 16px !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
             border: 1px solid #e5e7eb !important;
           }
           
-          /* Header styling */
+          /* Compact header */
           [class*="header"],
           [class*="title"] {
+            padding: 0.75rem 1rem !important;
             border-bottom: 1px solid #e5e7eb !important;
-            padding: 1rem 1.25rem !important;
+            font-size: 14px !important;
           }
           
-          /* Message bubbles */
+          /* Compact messages */
           [class*="message"],
           [class*="bubble"] {
-            border-radius: 12px !important;
-            padding: 0.75rem 1rem !important;
-            font-size: 15px !important;
-            line-height: 1.6 !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            margin: 0.25rem 0 !important;
           }
           
-          /* Input area */
+          /* Compact input */
           [class*="input"],
           [class*="text-input"] {
-            border-radius: 8px !important;
+            border-radius: 6px !important;
             border: 1px solid #e5e7eb !important;
-            padding: 0.75rem 1rem !important;
-            font-size: 15px !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 14px !important;
           }
           
           [class*="input"]:focus {
             border-color: #111827 !important;
-            box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1) !important;
             outline: none !important;
+            box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1) !important;
           }
           
-          /* Button styling */
-          [class*="button"],
-          [class*="send"] {
-            border-radius: 8px !important;
-            transition: all 0.2s ease !important;
-          }
-          
-          [class*="button"]:hover {
-            opacity: 0.9 !important;
-            transform: scale(1.02) !important;
-          }
-          
-          /* Scrollbar styling */
+          /* Thin scrollbar */
           *::-webkit-scrollbar {
-            width: 6px !important;
-          }
-          
-          *::-webkit-scrollbar-track {
-            background: transparent !important;
+            width: 4px !important;
           }
           
           *::-webkit-scrollbar-thumb {
             background: #cbd5e1 !important;
-            border-radius: 10px !important;
+            border-radius: 2px !important;
           }
           
-          *::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af !important;
-          }
-          
-          /* Dark mode support */
+          /* Dark mode */
           .dark-mode [class*="chat-window"],
           .dark-mode [class*="bubble-chat"] {
             background-color: #111827 !important;
@@ -127,24 +107,8 @@ const Chatbot = () => {
             color: #f3f4f6 !important;
           }
           
-          .dark-mode [class*="input"]:focus {
-            border-color: #6366f1 !important;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
-          }
-          
           .dark-mode *::-webkit-scrollbar-thumb {
             background: #4b5563 !important;
-          }
-          
-          /* Responsive adjustments */
-          @media (max-width: 768px) {
-            [class*="chat-window"],
-            [class*="bubble-chat"] {
-              width: calc(100vw - 2rem) !important;
-              max-width: 380px !important;
-              height: calc(100vh - 8rem) !important;
-              max-height: 600px !important;
-            }
           }
         `,
         chatWindow: {
@@ -152,19 +116,19 @@ const Chatbot = () => {
           showAgentMessages: true,
           title: 'Rod Kent Ito',
           titleAvatarSrc: '/images/profile.png',
-          welcomeMessage: 'Hi! I\'m Rod Kent Ito. Ask me anything about my portfolio, skills, or projects!',
-          errorMessage: 'Sorry, I\'m having trouble connecting right now. Please try again later.',
+          welcomeMessage: 'Hi! Ask me anything about my portfolio, skills, or projects.',
+          errorMessage: 'Sorry, I\'m having trouble connecting. Please try again later.',
           backgroundColor: '#ffffff',
           backgroundImage: undefined,
-          height: 600,
-          width: 400,
-          fontSize: 15,
+          height: 480,
+          width: 320,
+          fontSize: 14,
           starterPrompts: [
             "Tell me about your skills",
             "What projects have you worked on?",
             "How can I contact you?"
           ],
-          starterPromptFontSize: 14,
+          starterPromptFontSize: 13,
           clearChatOnReload: false,
           sourceDocsTitle: 'Sources:',
           renderHTML: true,
@@ -177,8 +141,8 @@ const Chatbot = () => {
           userMessage: {
             backgroundColor: '#111827',
             textColor: '#ffffff',
-            showAvatar: true,
-            avatarSrc: undefined // Use default user icon
+            showAvatar: false,
+            avatarSrc: undefined
           },
           textInput: {
             placeholder: 'Type your message...',
@@ -186,7 +150,7 @@ const Chatbot = () => {
             textColor: '#111827',
             sendButtonColor: '#111827',
             maxChars: 1000,
-            maxCharsWarningMessage: 'You exceeded the character limit. Please input less than 1000 characters.',
+            maxCharsWarningMessage: 'Character limit exceeded.',
             autoFocus: false,
             sendMessageSound: false,
             sendSoundLocation: undefined,
@@ -197,8 +161,8 @@ const Chatbot = () => {
             color: '#6b7280'
           },
           dateTimeToggle: {
-            date: true,
-            time: true
+            date: false,
+            time: false
           },
           footer: {
             textColor: '#9ca3af',
