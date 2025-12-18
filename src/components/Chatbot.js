@@ -160,7 +160,7 @@ const Chatbot = () => {
             backgroundColor: botMessageBg,
             textColor: botMessageText,
             showAvatar: true,
-            avatarSrc: '/images/profile.png'
+            avatarSrc: '/images/Profile.png'
           },
           userMessage: {
             backgroundColor: userMessageBg,
