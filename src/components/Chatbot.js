@@ -23,16 +23,6 @@ const Chatbot = () => {
         tooltip: {
           showTooltip: false
         },
-        disclaimer: {
-          title: 'Disclaimer',
-          message: "By using this chatbot, you agree to the <a target=\"_blank\" href=\"https://flowiseai.com/terms\">Terms & Condition</a>",
-          textColor: '#111827',
-          buttonColor: '#111827',
-          buttonText: 'Start Chatting',
-          buttonTextColor: '#ffffff',
-          blurredBackgroundColor: 'rgba(0, 0, 0, 0.5)',
-          backgroundColor: '#ffffff'
-        },
         customCSS: `
           /* Clean minimalist style */
           * {
@@ -106,6 +96,13 @@ const Chatbot = () => {
           .dark-mode *::-webkit-scrollbar-thumb {
             background: #4b5563 !important;
           }
+          
+          /* Hide disclaimer and footer */
+          [class*="disclaimer"],
+          [class*="footer"],
+          [class*="powered-by"] {
+            display: none !important;
+          }
         `,
         chatWindow: {
           showTitle: true,
@@ -162,9 +159,9 @@ const Chatbot = () => {
           },
           footer: {
             textColor: '#9ca3af',
-            text: 'Powered by',
-            company: 'Flowise',
-            companyLink: 'https://flowiseai.com'
+            text: '',
+            company: '',
+            companyLink: ''
           }
         }
       }}
