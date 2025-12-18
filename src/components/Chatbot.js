@@ -21,11 +21,7 @@ const Chatbot = () => {
           }
         },
         tooltip: {
-          showTooltip: true,
-          tooltipMessage: 'Chat with me 👋',
-          tooltipBackgroundColor: '#111827',
-          tooltipTextColor: '#ffffff',
-          tooltipFontSize: 12
+          showTooltip: false
         },
         disclaimer: {
           title: 'Disclaimer',
