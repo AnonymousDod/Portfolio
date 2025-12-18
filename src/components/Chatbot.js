@@ -139,7 +139,7 @@ const Chatbot = () => {
           showTitle: true,
           showAgentMessages: true,
           title: 'Rod Kent Ito',
-          titleAvatarSrc: '/images/profile.png',
+          titleAvatarSrc: '/images/Profile.png',
           welcomeMessage: 'Hi! Ask me anything about my portfolio, skills, or projects.',
           errorMessage: 'Sorry, I\'m having trouble connecting. Please try again later.',
           backgroundColor: chatWindowBg,
