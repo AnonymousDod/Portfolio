@@ -11,7 +11,7 @@ const Projects = () => {
       description: 'Full-stack e-commerce solution with payment processing and admin dashboard.',
       tags: ['React', 'Node.js','Typescript','Javascript'],
       github: 'https://github.com/Fabriqly/Fabriqly',
-      image: '/images/fabriqly.png' // Add your image to public/images/ folder
+      image: '/images/Fabriqly.png' // Add your image to public/images/ folder
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ const Projects = () => {
       description: 'CRUD-Management System for a project.',
       tags: ['Javascript', 'HTML', 'CSS'],
       github:'https://github.com/AnonymousDod/JS-REVIEW-PROJECT---2',
-      image: '/images/TODO.png' // Add your image to public/images/ folder
+      image: '/images/Todo.png' // Add your image to public/images/ folder
     },
   ];
 
