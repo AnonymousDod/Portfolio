@@ -27,7 +27,7 @@ const Projects = () => {
       description: 'Build Rest API for a project.',
       tags: ['Typescript','Rest API'],
       github: 'https://github.com/AnonymousDod/act4_build_rest_api',
-      image: '/images/RestAPI.png' // Add your image to public/images/ folder
+      image: '/images/RestApi.png' // Add your image to public/images/ folder
     },
     {
       id: 4,
