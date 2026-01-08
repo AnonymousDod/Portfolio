@@ -28,7 +28,7 @@ const Header = () => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <nav className="nav container">
         <div className="nav__logo">
-          <span>ITO/IT-ELAI FINALS</span>
+          <span>PORTFOLIO</span>
         </div>
         
         <div className={`nav__menu ${isMobileMenuOpen ? 'show-menu' : ''}`}>
@@ -45,12 +45,7 @@ const Header = () => {
             </li>
             <li className="nav__item">
               <a href="#skills" className="nav__link" onClick={(e) => { e.preventDefault(); scrollToSection('skills'); }}>
-                Skills
-              </a>
-            </li>
-            <li className="nav__item">
-              <a href="#projects" className="nav__link" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}>
-                Projects
+                Skills & Projects
               </a>
             </li>
             <li className="nav__item">

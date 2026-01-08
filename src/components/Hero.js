@@ -25,12 +25,11 @@ const Hero = () => {
           <div className="hero__header">
             <h1 className="hero__title">
               Rod Kent M. Ito
-              <i className="fas fa-check-circle hero__verified"></i>
             </h1>
             <p className="hero__location">
               <i className="fas fa-map-marker-alt"></i> Philippines
             </p>
-            <h2 className="hero__subtitle">IT Student | Web Developer</h2>
+            <h2 className="hero__subtitle">IT Student | Full-Stack Developer</h2>
           </div>
           <div className="hero__buttons">
             <a href="#contact" className="btn btn--primary">
